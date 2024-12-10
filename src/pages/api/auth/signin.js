@@ -1,7 +1,7 @@
 import User from "../../../../models/User";
 import { veryfiPassword } from "../../../../utils/auth";
 import connectDB from "../../../../utils/connectDB";
-
+import sign from "bcryptjs";
 async function handler(req, res) {
   try {
     await connectDB();
@@ -13,6 +13,8 @@ async function handler(req, res) {
   }
 
   const { email, password } = req.body;
+  const secretKey = process.env.SECRET_KEY;
+  const expiration = 24 * 60 * 60;
 
   if (!email || !password) {
     return res.status(422).json({ status: "failed", message: "Invalid Data" });
@@ -32,6 +34,7 @@ async function handler(req, res) {
       .status(422)
       .json({ status: "failed", message: "Username or Password is incorrect" });
   }
-}
+  const token = sign({ email }, secretKey, { expiresIn: expiration });
+}   
 
 export default handler;
