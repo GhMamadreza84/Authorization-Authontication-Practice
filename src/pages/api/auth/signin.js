@@ -1,3 +1,4 @@
+import { serialize } from "cookie";
 import User from "../../../../models/User";
 import { veryfiPassword } from "../../../../utils/auth";
 import connectDB from "../../../../utils/connectDB";
@@ -35,6 +36,19 @@ async function handler(req, res) {
       .json({ status: "failed", message: "Username or Password is incorrect" });
   }
   const token = sign({ email }, secretKey, { expiresIn: expiration });
-}   
+  const serialized = serialize("tokene", token, {
+    httpOnly: true,
+    maxAge: expiration,
+    path: "/",
+  });
+  res
+    .status(200)
+    .setHeader("Set-Cookie", serialized)
+    .json({
+      status: "success",
+      message: "Logged in!",
+      data: { email: user.email },
+    });
+}
 
 export default handler;
