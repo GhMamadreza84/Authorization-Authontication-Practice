@@ -2,7 +2,7 @@ import { serialize } from "cookie";
 import User from "../../../../models/User";
 import { veryfiPassword } from "../../../../utils/auth";
 import connectDB from "../../../../utils/connectDB";
-import sign from "bcryptjs";
+import { sign } from "jsonwebtoken";
 async function handler(req, res) {
   try {
     await connectDB();
@@ -21,7 +21,7 @@ async function handler(req, res) {
     return res.status(422).json({ status: "failed", message: "Invalid Data" });
   }
 
-  const user = await User.findeOne({ email: email });
+  const user = await User.findOne({ email: email });
   if (!user) {
     return res
       .status(404)
