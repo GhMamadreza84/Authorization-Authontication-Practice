@@ -1,4 +1,4 @@
-const { hash } = require("bcryptjs");
+const { hash, compare } = require("bcryptjs");
 
 async function HashedPassword(password) {
   const HashedPassword = await hash(password, 12);
@@ -6,4 +6,10 @@ async function HashedPassword(password) {
   return HashedPassword;
 }
 
-export { HashedPassword };
+async function veryfiPassword(password, hashPassword) {
+  const isValid = await compare(password, hashPassword);
+  return isValid;
+  console.log(isValid);
+}
+
+export { HashedPassword, veryfiPassword };
