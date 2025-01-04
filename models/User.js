@@ -9,6 +9,12 @@ const userSchema = new Schema({
     type: String,
     requierd: true,
   },
+  name: {
+    type: String,
+  },
+  lastName: {
+    type: String,
+  },
   createdAt: {
     type: Date,
     default: () => Date.now(),
