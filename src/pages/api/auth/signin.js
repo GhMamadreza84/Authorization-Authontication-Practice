@@ -36,7 +36,7 @@ async function handler(req, res) {
       .json({ status: "failed", message: "Username or Password is incorrect" });
   }
   const token = sign({ email }, secretKey, { expiresIn: expiration });
-  const serialized = serialize("tokene", token, {
+  const serialized = serialize("token", token, {
     httpOnly: true,
     maxAge: expiration,
     path: "/",

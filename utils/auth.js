@@ -1,3 +1,5 @@
+import { verify } from "jsonwebtoken";
+
 const { hash, compare } = require("bcryptjs");
 
 async function HashedPassword(password) {
@@ -12,4 +14,13 @@ async function veryfiPassword(password, hashPassword) {
   console.log(isValid);
 }
 
-export { HashedPassword, veryfiPassword };
+function verifyToken(token, secretKey) {
+  try {
+    const result = verify(token, secretKey);
+    return { email: result.email };
+  } catch (error) {
+    return false;
+  }
+}
+
+export { HashedPassword, veryfiPassword, verifyToken };
